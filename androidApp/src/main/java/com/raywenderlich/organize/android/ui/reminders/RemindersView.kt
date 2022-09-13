@@ -34,6 +34,9 @@
 
 package com.raywenderlich.organize.android.ui.reminders
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,11 +45,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -99,6 +104,7 @@ private fun Toolbar(
   )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ContentView(viewModel: RemindersViewModel) {
   var textFieldValue by remember { mutableStateOf("") }
@@ -118,20 +124,67 @@ private fun ContentView(viewModel: RemindersViewModel) {
       .fillMaxSize()
       .padding(top = 4.dp, bottom = 8.dp)
   ) {
-    items(items = reminders) { item ->
+    items(items = reminders, key = { it.id }) { item ->
       val onItemClick = {
         focusManager.clearFocus()
         viewModel.markReminder(id = item.id, isCompleted = !item.isCompleted)
       }
 
-      ReminderItem(
-        title = item.title,
-        isCompleted = item.isCompleted,
-        modifier = Modifier
-          .fillMaxWidth()
-          .clickable(enabled = true, onClick = onItemClick)
-          .padding(horizontal = 16.dp, vertical = 4.dp)
-      )
+      val onItemDelete = {
+        focusManager.clearFocus()
+        viewModel.deleteReminder(item.id)
+      }
+
+      val dismissState = rememberDismissState()
+      if (dismissState.isDismissed(DismissDirection.EndToStart)) {
+        onItemDelete()
+      }
+
+      SwipeToDismiss(
+        state = dismissState,
+        directions = setOf(DismissDirection.EndToStart),
+        dismissThresholds = {
+          FractionalThreshold(0.15f)
+        },
+        background = {
+          val color by animateColorAsState(
+            when (dismissState.targetValue) {
+              DismissValue.Default -> Color.White
+              else -> Color.Red
+            }
+          )
+          val alignment = Alignment.CenterEnd
+          val icon = Icons.Default.Delete
+
+          val scale by animateFloatAsState(
+            if (dismissState.targetValue == DismissValue.Default) 0f else 1f
+          )
+
+          Box(
+            Modifier
+              .fillMaxSize()
+              .background(color)
+              .padding(horizontal = 16.dp),
+            contentAlignment = alignment
+          ) {
+            Icon(
+              icon,
+              tint = Color.White,
+              contentDescription = "Delete Icon",
+              modifier = Modifier.scale(scale)
+            )
+          }
+        }
+      ) {
+        ReminderItem(
+          title = item.title,
+          isCompleted = item.isCompleted,
+          modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = true, onClick = onItemClick)
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+        )
+      }
     }
 
     item {

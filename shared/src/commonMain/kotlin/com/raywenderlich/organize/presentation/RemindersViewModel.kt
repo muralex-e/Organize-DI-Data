@@ -63,4 +63,9 @@ class RemindersViewModel(
     repository.markReminder(id = id, isCompleted = isCompleted)
     onRemindersUpdated?.invoke(reminders)
   }
+
+  fun deleteReminder(id: String) {
+    repository.deleteReminder(id)
+    onRemindersUpdated?.invoke(reminders)
+  }
 }

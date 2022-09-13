@@ -18,10 +18,13 @@ class DatabaseHelper(
     dbRef.tableQueries.insertReminder(id, title)
   }
 
-
   fun updateIsCompleted(id: String, isCompleted: Boolean) {
     dbRef.tableQueries
       .updateIsCompleted(isCompleted.toLong(), id)
+  }
+
+  fun deleteReminder(id: String) {
+    dbRef.tableQueries.deleteReminder(id)
   }
 
 }

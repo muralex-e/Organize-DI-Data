@@ -50,6 +50,27 @@ struct RemindersView: View {
                   shouldFocusOnTextField = false
                 }
               }
+              .contextMenu {
+                Button(role: .destructive) {
+                  withAnimation {
+                    viewModelWrapper.viewModel.deleteReminder(id: item.id)
+                  }
+                } label: {
+                  Label("Delete", systemImage: "trash")
+                }
+              }
+              .swipeActions(
+                edge: .trailing,
+                allowsFullSwipe: true
+              ) {
+                Button(role: .destructive) {
+                  withAnimation {
+                    viewModelWrapper.viewModel.deleteReminder(id: item.id)
+                  }
+                } label: {
+                  Label("Delete", systemImage: "trash")
+                }
+              }
           }
         }
       }
