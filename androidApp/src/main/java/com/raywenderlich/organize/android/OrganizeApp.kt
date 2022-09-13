@@ -55,6 +55,7 @@ class OrganizeApp : Application() {
         single<SharedPreferences> {
           get<Context>().getSharedPreferences("OrganizeApp", Context.MODE_PRIVATE)
         }
+
       },
       viewModelsModule = module {
         viewModel {

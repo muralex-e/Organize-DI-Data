@@ -35,6 +35,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("com.squareup.sqldelight")
 }
 
 kotlin {
@@ -60,18 +61,17 @@ kotlin {
                 implementation("com.russhwolf:multiplatform-settings:${rootProject.extra["settingsVersion"]}")
             }
         }
-
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation("io.insert-koin:koin-test:${rootProject.ext["koinVersion"]}")
-
+                implementation("io.insert-koin:koin-test:${rootProject.extra["koinVersion"]}")
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+                implementation("com.squareup.sqldelight:android-driver:${rootProject.extra["sqlDelightVersion"]}")
             }
         }
         val androidTest by getting {
@@ -85,6 +85,9 @@ kotlin {
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
             dependsOn(commonMain)
+            dependencies {
+                implementation("com.squareup.sqldelight:native-driver:${rootProject.extra["sqlDelightVersion"]}")
+            }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
@@ -100,6 +103,9 @@ kotlin {
         }
         val desktopMain by getting {
             dependsOn(commonMain)
+            dependencies {
+                implementation("com.squareup.sqldelight:sqlite-driver:${rootProject.extra["sqlDelightVersion"]}")
+            }
         }
         val desktopTest by getting {
             dependencies {
@@ -118,3 +124,11 @@ android {
         targetSdk = 32
     }
 }
+
+sqldelight {
+    database("OrganizeDb") {
+        packageName = "com.raywenderlich.organize"
+        schemaOutputDirectory = file("src/commonMain/sqldelight/com/raywenderlich/organize/db")
+    }
+}
+
