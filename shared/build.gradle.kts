@@ -56,6 +56,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("io.insert-koin:koin-core:${rootProject.extra["koinVersion"]}")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                implementation("com.russhwolf:multiplatform-settings:${rootProject.extra["settingsVersion"]}")
             }
         }
 

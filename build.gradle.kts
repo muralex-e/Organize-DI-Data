@@ -34,6 +34,8 @@
 
 val composeVersion by extra("1.1.1")
 val koinVersion by extra("3.1.5")
+val settingsVersion by extra("0.8.1")
+val sqlDelightVersion by extra("1.5.3")
 
 buildscript {
     repositories {

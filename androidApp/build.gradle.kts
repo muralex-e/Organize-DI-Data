@@ -87,6 +87,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.navigation:navigation-compose:2.4.1")
+    implementation("com.russhwolf:multiplatform-settings:${rootProject.extra["settingsVersion"]}")
+
 
     implementation("io.insert-koin:koin-android:${rootProject.ext["koinVersion"]}")
     implementation("io.insert-koin:koin-androidx-compose:${rootProject.ext["koinVersion"]}")

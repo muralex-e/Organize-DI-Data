@@ -40,7 +40,10 @@ struct AboutView: View {
 
   var body: some View {
     NavigationView {
-      AboutListView(items: viewModel.items)
+      AboutListView(
+        items: viewModel.items,
+        footer: "This page was first opened on \(viewModel.firstOpening)"
+      )
         .navigationTitle("About Device")
         .toolbar {
           ToolbarItem(placement: .primaryAction) {

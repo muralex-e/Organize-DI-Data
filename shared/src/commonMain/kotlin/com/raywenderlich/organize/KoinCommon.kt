@@ -8,13 +8,16 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
+
+expect val platformModule: Module
+
 object Modules {
   val repositories = module {
     factory { RemindersRepository() }
   }
   val viewModels = module {
     factory { RemindersViewModel(get()) }
-    factory { AboutViewModel(get()) }
+    factory { AboutViewModel(get(), get()) }
   }
 
   val core = module {
@@ -34,5 +37,6 @@ fun initKoin(
     coreModule,
     repositoriesModule,
     viewModelsModule,
+    platformModule,
   )
 }

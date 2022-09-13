@@ -35,6 +35,8 @@
 package com.raywenderlich.organize.android
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import com.raywenderlich.organize.initKoin
 import com.raywenderlich.organize.presentation.AboutViewModel
 import com.raywenderlich.organize.presentation.RemindersViewModel
@@ -48,16 +50,22 @@ class OrganizeApp : Application() {
     super.onCreate()
 
     initKoin(
+      appModule = module {
+        single<Context> { this@OrganizeApp }
+        single<SharedPreferences> {
+          get<Context>().getSharedPreferences("OrganizeApp", Context.MODE_PRIVATE)
+        }
+      },
       viewModelsModule = module {
         viewModel {
           RemindersViewModel(get())
         }
         viewModel {
-          AboutViewModel(get())
+          AboutViewModel(get(), get())
         }
-
       }
     )
+
   }
 
 }

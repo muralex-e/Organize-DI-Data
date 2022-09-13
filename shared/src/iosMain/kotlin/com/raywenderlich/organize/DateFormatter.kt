@@ -32,65 +32,22 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.organize.presentation
+package com.raywenderlich.organize
 
-import com.raywenderlich.organize.DateFormatter
-import com.raywenderlich.organize.Platform
-import com.russhwolf.settings.Settings
-import kotlinx.datetime.Clock
-import kotlin.math.max
-import kotlin.math.min
+import platform.Foundation.*
 
-class AboutViewModel(
-  platform: Platform,
-  settings: Settings,
-) : BaseViewModel() {
-
-  val firstOpening: String
+actual object DateFormatter {
+  private val sharedFormatter = NSDateFormatter()
 
   init {
-    //1
-    val timestampKey = "FIRST_OPENING_TIMESTAMP"
-
-    //2
-    val savedValue = settings.getLongOrNull(timestampKey)
-
-    //3
-    firstOpening = if (savedValue == null) {
-      val time = Clock.System.now().epochSeconds - 1
-      settings.putLong(timestampKey, time)
-
-      DateFormatter.formatEpoch(time)
-    } else {
-      DateFormatter.formatEpoch(savedValue)
-    }
+    sharedFormatter.dateStyle = NSDateFormatterFullStyle
+    sharedFormatter.timeStyle = NSDateFormatterShortStyle
+    sharedFormatter.formattingContext = NSFormattingContextStandalone
   }
 
-  val items: List<RowItem> = makeRowItems(platform)
-
-  private fun makeRowItems(platform: Platform): List<RowItem> {
-    val rowItems = mutableListOf(
-      RowItem("Operating System", "${platform.osName} ${platform.osVersion}"),
-      RowItem("Device", platform.deviceModel),
-      RowItem("CPU", platform.cpuType),
+  actual fun formatEpoch(epoch: Long): String {
+    return sharedFormatter.stringFromDate(
+      NSDate.dateWithTimeIntervalSince1970(epoch.toDouble())
     )
-    platform.screen?.let {
-      rowItems.add(
-        RowItem(
-          "Display",
-          "${
-            max(it.width, it.height)
-          }×${
-            min(it.width, it.height)
-          } @${it.density}x"
-        ),
-      )
-    }
-    return rowItems
   }
-
-  data class RowItem(
-    val title: String,
-    val subtitle: String,
-  )
 }

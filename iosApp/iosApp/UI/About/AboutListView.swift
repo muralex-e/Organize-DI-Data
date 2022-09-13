@@ -35,19 +35,26 @@ import shared
 
 struct AboutListView: View {
   let items: [AboutViewModel.RowItem]
+  let footer: String
 
   var body: some View {
     List {
-      ForEach(items, id: \.self) { item in
-        VStack(alignment: .leading) {
-          Text(item.title)
-            .font(.footnote)
-            .foregroundColor(.secondary)
-          Text(item.subtitle)
-            .font(.body)
-            .foregroundColor(.primary)
+      Section(
+        footer: Text(footer)
+          .font(.caption2)
+          .foregroundColor(.secondary)
+      ) {
+        ForEach(items, id: \.self) { item in
+          VStack(alignment: .leading) {
+            Text(item.title)
+              .font(.footnote)
+              .foregroundColor(.secondary)
+            Text(item.subtitle)
+              .font(.body)
+              .foregroundColor(.primary)
+          }
+          .padding(.vertical, 4)
         }
-        .padding(.vertical, 4)
       }
     }
   }
@@ -55,6 +62,9 @@ struct AboutListView: View {
 
 struct AboutListView_Previews: PreviewProvider {
   static var previews: some View {
-    AboutListView(items: [AboutViewModel.RowItem(title: "Title", subtitle: "Subtitle")])
+    AboutListView(
+      items: [AboutViewModel.RowItem(title: "Title", subtitle: "Subtitle")],
+      footer: "Section Footer"
+    )
   }
 }
