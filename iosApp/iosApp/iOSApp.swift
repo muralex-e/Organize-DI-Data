@@ -35,6 +35,10 @@ import SwiftUI
 // swiftlint:disable type_name
 @main
 struct iOSApp: App {
+  init() {
+      Koin.start()
+    }
+  
   var body: some Scene {
     WindowGroup {
       ContentView()

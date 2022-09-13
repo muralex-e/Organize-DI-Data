@@ -88,6 +88,9 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.navigation:navigation-compose:2.4.1")
 
+    implementation("io.insert-koin:koin-android:${rootProject.ext["koinVersion"]}")
+    implementation("io.insert-koin:koin-androidx-compose:${rootProject.ext["koinVersion"]}")
+
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["composeVersion"]}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeVersion"]}")
     androidTestImplementation("androidx.fragment:fragment-testing:1.4.1")

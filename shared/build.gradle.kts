@@ -53,11 +53,18 @@ kotlin {
     jvm("desktop")
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("io.insert-koin:koin-core:${rootProject.extra["koinVersion"]}")
+            }
+        }
+
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("io.insert-koin:koin-test:${rootProject.ext["koinVersion"]}")
+
             }
         }
         val androidMain by getting {

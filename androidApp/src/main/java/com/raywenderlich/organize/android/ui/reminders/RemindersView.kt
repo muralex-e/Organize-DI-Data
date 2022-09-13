@@ -45,6 +45,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -65,10 +66,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.raywenderlich.organize.domain.Reminder
 import com.raywenderlich.organize.presentation.RemindersViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun RemindersView(
-  viewModel: RemindersViewModel = RemindersViewModel(),
+  viewModel: RemindersViewModel = getViewModel(),
   onAboutButtonClick: () -> Unit,
 ) {
   Column {
@@ -191,6 +193,7 @@ private fun ReminderItem(
   }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun NewReminderTextField(
   value: String,

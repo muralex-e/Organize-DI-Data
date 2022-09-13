@@ -31,3 +31,41 @@
 /// THE SOFTWARE.
 
 import Foundation
+
+import shared
+
+final class Koin {
+  //1
+  private var core: Koin_coreKoin?
+
+  //2
+  static let instance = Koin()
+
+  //3
+  static func start() {
+    if instance.core == nil {
+      let app = KoinIOS.shared.initialize()
+      instance.core = app.koin
+    }
+    if instance.core == nil {
+      fatalError("Can't initialize Koin.")
+    }
+  }
+
+  //4
+  private init() {
+  }
+  
+  //5
+  func get<T: AnyObject>() -> T {
+    guard let core = core else {
+      fatalError("You should call `start()` before using \(#function)")
+    }
+
+    guard let result = core.get(objCClass: T.self) as? T else {
+      fatalError("Koin can't provide an instance of type: \(T.self)")
+    }
+
+    return result
+  }
+}

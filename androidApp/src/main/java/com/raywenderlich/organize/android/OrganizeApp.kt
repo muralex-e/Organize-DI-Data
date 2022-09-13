@@ -35,6 +35,29 @@
 package com.raywenderlich.organize.android
 
 import android.app.Application
+import com.raywenderlich.organize.initKoin
+import com.raywenderlich.organize.presentation.AboutViewModel
+import com.raywenderlich.organize.presentation.RemindersViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
+
+import org.koin.dsl.module
 
 class OrganizeApp : Application() {
+
+  override fun onCreate() {
+    super.onCreate()
+
+    initKoin(
+      viewModelsModule = module {
+        viewModel {
+          RemindersViewModel(get())
+        }
+        viewModel {
+          AboutViewModel(get())
+        }
+
+      }
+    )
+  }
+
 }
